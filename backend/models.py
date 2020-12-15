@@ -17,7 +17,7 @@ class Competicao(db.Model):
             "id": self.id,
             "cidade": self.cidade,
             "uf": self.uf,
-            "ano": self.ano
+            "ano": self.ano,
         }
 
 
@@ -42,7 +42,7 @@ class Equipe(db.Model):
             "endereco": self.endereco,
             "tecnico": self.tecnico,
             "competicao_id": self.competicao_id,
-            "competicao": self.competicao
+            "competicao": self.competicao.json(),
         }
 
 
@@ -56,6 +56,9 @@ class Atleta(db.Model):
 
     equipe_id = db.Column(db.Integer, db.ForeignKey(Equipe.id), nullable=False)
     equipe = db.relationship("Equipe")
+
+    competicao_id = db.Column(db.Integer, db.ForeignKey(Competicao.id), nullable=False)
+    competicao = db.relationship("Competicao")
 
 
     def __str__(self):
@@ -71,7 +74,9 @@ class Atleta(db.Model):
             "sexo": self.sexo,
             "colocacao": self.colocacao,
             "equipe_id": self.equipe_id,
-            "equipe": self.equipe
+            "equipe": self.equipe.json(),
+            "competicao_id": self.competicao_id,
+            "competicao": self.competicao.json(),
         }
 
 
@@ -91,7 +96,7 @@ if __name__ == "__main__":
 
     a1 = Atleta(cpf="333.333.333-22", nome="Yasmin J. Piske",
                 endereco="Rua Hermann Schwanke, 1",
-                sexo="Feminino", colocacao=1 ,equipe=e1)
+                sexo="Feminino", colocacao=1 ,equipe=e1, competicao=c1)
     db.session.add(a1)
 
     db.session.commit()
